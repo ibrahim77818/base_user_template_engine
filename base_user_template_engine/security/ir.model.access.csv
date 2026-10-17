@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_res_users_template_manager,res.users.template manager,model_res_users_template,group_user_template_manager,1,1,1,1
+access_res_users_template_erp_manager,res.users.template access rights (read),model_res_users_template,base.group_erp_manager,1,0,0,0
+access_res_users_tag_manager,res.users.tag manager,model_res_users_tag,group_user_template_manager,1,1,1,1
+access_res_users_tag_erp_manager,res.users.tag access rights (read),model_res_users_tag,base.group_erp_manager,1,0,0,0
+access_res_users_template_log_manager,res.users.template.log manager,model_res_users_template_log,group_user_template_manager,1,0,0,1
+access_res_users_template_apply_wizard_manager,res.users.template.apply.wizard manager,model_res_users_template_apply_wizard,group_user_template_manager,1,1,1,1

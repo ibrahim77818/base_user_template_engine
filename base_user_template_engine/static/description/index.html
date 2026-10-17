@@ -1,0 +1,412 @@
+<!-- ================================================================= -->
+<!--  User Template Engine (base_user_template_engine) - Odoo 18        -->
+<!--  Author: Ibrahim Yahia                                            -->
+<!-- ================================================================= -->
+
+<!-- HERO -->
+<section class="container" style="padding:48px 16px 24px;">
+    <div class="row align-items-center">
+        <div class="col-lg-6" style="margin-bottom:24px;">
+            <p style="font-size:13px;letter-spacing:3px;text-transform:uppercase;color:#875A7B;font-weight:600;margin-bottom:8px;">
+                Odoo 18 &middot; Administration &middot; Users &amp; Access Rights
+            </p>
+            <h1 style="font-size:40px;font-weight:700;color:#2D2A32;line-height:1.15;margin:0 0 16px;">
+                User Template Engine
+            </h1>
+            <p style="font-size:18px;color:#4A4550;line-height:1.6;margin-bottom:20px;">
+                Provision users from <b>layered, inheritable templates</b> of languages, time zones,
+                companies and access groups. Group users with <b>tags</b>, decide per setting whether a
+                template <b>merges</b> or <b>overrides</b>, preview every change before it happens and keep
+                a complete <b>audit trail</b>.
+            </p>
+            <div>
+                <span style="display:inline-block;background:#F3EAF0;color:#875A7B;border-radius:20px;padding:5px 14px;margin:0 6px 8px 0;font-size:14px;font-weight:600;">Multi-template stacking</span>
+                <span style="display:inline-block;background:#F3EAF0;color:#875A7B;border-radius:20px;padding:5px 14px;margin:0 6px 8px 0;font-size:14px;font-weight:600;">Template inheritance</span>
+                <span style="display:inline-block;background:#F3EAF0;color:#875A7B;border-radius:20px;padding:5px 14px;margin:0 6px 8px 0;font-size:14px;font-weight:600;">User tags</span>
+                <span style="display:inline-block;background:#F3EAF0;color:#875A7B;border-radius:20px;padding:5px 14px;margin:0 6px 8px 0;font-size:14px;font-weight:600;">Bulk apply + dry run</span>
+                <span style="display:inline-block;background:#F3EAF0;color:#875A7B;border-radius:20px;padding:5px 14px;margin:0 6px 8px 0;font-size:14px;font-weight:600;">Audit log</span>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <img src="banner.png" alt="User Template Engine" class="img-fluid"
+                 style="border-radius:10px;box-shadow:0 10px 30px rgba(62,42,58,.25);width:100%;"/>
+        </div>
+    </div>
+</section>
+
+<!-- PROBLEM / SOLUTION -->
+<section class="container" style="padding:24px 16px;">
+    <h2 style="font-size:28px;font-weight:700;color:#2D2A32;text-align:center;margin-bottom:8px;">Why this module?</h2>
+    <p style="font-size:16px;color:#6B6570;text-align:center;max-width:760px;margin:0 auto 28px;">
+        Standard Odoo gives every new internal user the access rights of a single "Default User Template"
+        and nothing more. Everything after that is edited by hand, one user at a time.
+    </p>
+    <div class="row">
+        <div class="col-md-6" style="margin-bottom:20px;">
+            <div style="height:100%;border:1px solid #F1C9C9;background:#FFF7F7;border-radius:10px;padding:24px;">
+                <h3 style="font-size:20px;font-weight:700;color:#B03A3A;margin:0 0 14px;">The problem in standard Odoo</h3>
+                <ul style="font-size:15px;color:#4A4550;line-height:1.7;padding-left:20px;margin:0;">
+                    <li><b>One default only:</b> a single template for every new employee. Accountants, sales reps and
+                        contractors all start identical and must be corrected manually.</li>
+                    <li><b>No logical grouping of users:</b> there is no way to say "these 40 people are the finance team"
+                        and act on them together.</li>
+                    <li><b>No reuse:</b> a "Finance Manager" profile cannot extend an "Accountant" profile; each set of
+                        rights is rebuilt from scratch.</li>
+                    <li><b>Preferences are forgotten:</b> time zone, language, allowed and default companies are set
+                        user by user, and drift over time.</li>
+                    <li><b>Blind bulk changes:</b> there is no preview of what a mass change will do, and no record of
+                        who changed whose rights, when, and why.</li>
+                    <li><b>Risky edits:</b> it is easy to strip an administrator's rights or mix internal and portal
+                        user types by mistake.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6" style="margin-bottom:20px;">
+            <div style="height:100%;border:1px solid #CDE7D3;background:#F5FBF6;border-radius:10px;padding:24px;">
+                <h3 style="font-size:20px;font-weight:700;color:#2E7D46;margin:0 0 14px;">How this module solves it</h3>
+                <ul style="font-size:15px;color:#4A4550;line-height:1.7;padding-left:20px;margin:0;">
+                    <li><b>Unlimited templates</b>, global or targeted, stacked in a clear precedence order
+                        (sequence).</li>
+                    <li><b>User tags</b> group people logically; templates target tags, so moving a user between teams
+                        re-provisions them automatically.</li>
+                    <li><b>Template inheritance:</b> a child template inherits any setting from its parent, across
+                        multiple levels, with cycle protection.</li>
+                    <li><b>Merge or Override, per setting:</b> add rights on top of what users have, or enforce an exact
+                        configuration.</li>
+                    <li><b>Dry-run preview + audit log:</b> see the exact before/after of every user first; every applied
+                        change is logged with templates, trigger and author.</li>
+                    <li><b>Built-in safety:</b> user-type groups are never touched, admins are protected, portal users
+                        never receive internal rights, and the default company always stays allowed.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section style="background:#FAF7F9;padding:36px 0;margin:16px 0;">
+    <div class="container" style="padding:0 16px;">
+        <h2 style="font-size:28px;font-weight:700;color:#2D2A32;text-align:center;margin-bottom:28px;">How it works</h2>
+        <div class="row text-center">
+            <div class="col-md-3 col-sm-6" style="margin-bottom:20px;">
+                <div style="width:52px;height:52px;line-height:52px;border-radius:50%;background:#875A7B;color:#fff;font-size:22px;font-weight:700;margin:0 auto 12px;">1</div>
+                <h4 style="font-size:17px;font-weight:700;color:#2D2A32;">Tag your users</h4>
+                <p style="font-size:14px;color:#6B6570;">Finance Team, Sales Team, Management, External Contractors&hellip;</p>
+            </div>
+            <div class="col-md-3 col-sm-6" style="margin-bottom:20px;">
+                <div style="width:52px;height:52px;line-height:52px;border-radius:50%;background:#875A7B;color:#fff;font-size:22px;font-weight:700;margin:0 auto 12px;">2</div>
+                <h4 style="font-size:17px;font-weight:700;color:#2D2A32;">Build templates</h4>
+                <p style="font-size:14px;color:#6B6570;">A global baseline plus functional templates that inherit from it.</p>
+            </div>
+            <div class="col-md-3 col-sm-6" style="margin-bottom:20px;">
+                <div style="width:52px;height:52px;line-height:52px;border-radius:50%;background:#875A7B;color:#fff;font-size:22px;font-weight:700;margin:0 auto 12px;">3</div>
+                <h4 style="font-size:17px;font-weight:700;color:#2D2A32;">Preview</h4>
+                <p style="font-size:14px;color:#6B6570;">The engine resolves the full stack per user and shows a dry-run diff.</p>
+            </div>
+            <div class="col-md-3 col-sm-6" style="margin-bottom:20px;">
+                <div style="width:52px;height:52px;line-height:52px;border-radius:50%;background:#875A7B;color:#fff;font-size:22px;font-weight:700;margin:0 auto 12px;">4</div>
+                <h4 style="font-size:17px;font-weight:700;color:#2D2A32;">Apply &amp; audit</h4>
+                <p style="font-size:14px;color:#6B6570;">Automatically on create / tag change, or in bulk. Every change is logged.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES WITH SCREENSHOTS -->
+<section class="container" style="padding:24px 16px;">
+    <h2 style="font-size:28px;font-weight:700;color:#2D2A32;text-align:center;margin-bottom:8px;">Core functionalities</h2>
+    <p style="font-size:15px;color:#6B6570;text-align:center;margin-bottom:36px;">
+        All screenshots are taken from Odoo 18 with the module's demo data.
+    </p>
+
+    <!-- 1 -->
+    <div style="margin-bottom:56px;">
+        <h3 style="font-size:22px;font-weight:700;color:#875A7B;margin-bottom:8px;">1. Multiple templates, stacked by precedence</h3>
+        <p style="font-size:15px;color:#4A4550;line-height:1.7;">
+            Create as many templates as you need: a <b>Global Baseline</b> for all internal users and functional
+            templates such as <b>Accountants</b>, <b>Sales Reps</b>, <b>Finance Managers</b> or
+            <b>Restricted Contractors</b>. Drag the handle to change the sequence: templates are applied from the
+            lowest to the highest sequence, so a later template wins conflicts. Archived templates are ignored.
+        </p>
+        <img src="screenshots/01_templates_list.png" alt="Templates list" class="img-fluid"
+             style="border:1px solid #E4DDE2;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.08);width:100%;"/>
+    </div>
+
+    <!-- 2 -->
+    <div style="margin-bottom:56px;">
+        <h3 style="font-size:22px;font-weight:700;color:#875A7B;margin-bottom:8px;">2. Default preferences: language, time zone, home action</h3>
+        <p style="font-size:15px;color:#4A4550;line-height:1.7;">
+            Each template can pack default system preferences. Every setting has its own <b>policy</b>
+            (<i>Not Managed</i>, <i>Set on this Template</i>, <i>Inherit from Parent</i>) and its own <b>mode</b>.
+            The Global Baseline below sets English and the <i>Asia/Riyadh</i> time zone in <b>Merge</b> mode, so it
+            only fills users who have no value yet and never overwrites a personal choice.
+        </p>
+        <img src="screenshots/02_template_global_preferences.png" alt="Global baseline preferences" class="img-fluid"
+             style="border:1px solid #E4DDE2;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.08);width:100%;"/>
+    </div>
+
+    <!-- 3 -->
+    <div style="margin-bottom:56px;">
+        <h3 style="font-size:22px;font-weight:700;color:#875A7B;margin-bottom:8px;">3. Template inheritance with per-setting override</h3>
+        <p style="font-size:15px;color:#4A4550;line-height:1.7;">
+            <b>Accountants</b> is a child of the Global Baseline. Its time zone is <i>Inherit from Parent</i> but in
+            <b>Override</b> mode: the value comes from the parent, the behaviour comes from the child. Result in the
+            demo: Sara (who had <i>Europe/Paris</i>) is moved to <i>Asia/Riyadh</i>, while users outside Finance keep
+            their own time zone.
+        </p>
+        <img src="screenshots/03_template_accountants_inherit.png" alt="Accountants template inheriting from baseline" class="img-fluid"
+             style="border:1px solid #E4DDE2;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.08);width:100%;"/>
+    </div>
+
+    <!-- 4 -->
+    <div style="margin-bottom:56px;">
+        <h3 style="font-size:22px;font-weight:700;color:#875A7B;margin-bottom:8px;">4. Access rights: grant and revoke groups</h3>
+        <p style="font-size:15px;color:#4A4550;line-height:1.7;">
+            Templates grant access groups and can also <b>revoke</b> groups explicitly. <b>Sales Reps</b> grants
+            <i>Contact Creation</i> and revokes the <i>export</i> right that the Global Baseline grants to everyone,
+            showing conflict resolution between two templates. Internal / Portal / Public user-type groups cannot be
+            selected, so a template can never change a user's type.
+        </p>
+        <img src="screenshots/04_template_sales_access_rights.png" alt="Sales reps access rights" class="img-fluid"
+             style="border:1px solid #E4DDE2;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.08);width:100%;"/>
+    </div>
+
+    <!-- 5 -->
+    <div style="margin-bottom:56px;">
+        <h3 style="font-size:22px;font-weight:700;color:#875A7B;margin-bottom:8px;">5. Strict override templates</h3>
+        <p style="font-size:15px;color:#4A4550;line-height:1.7;">
+            <b>Restricted Contractors</b> runs last (sequence 90) in <b>Override</b> mode with an empty group list: it
+            replaces everything granted by earlier templates. A contractor who is also tagged <i>Sales Team</i> ends
+            up with the Internal User type only, plus a <i>UTC</i> time zone.
+        </p>
+        <img src="screenshots/06_template_contractors_override.png" alt="Contractors override template" class="img-fluid"
+             style="border:1px solid #E4DDE2;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.08);width:100%;"/>
+    </div>
+
+    <!-- 6 -->
+    <div style="margin-bottom:56px;">
+        <h3 style="font-size:22px;font-weight:700;color:#875A7B;margin-bottom:8px;">6. Allowed companies and default company</h3>
+        <p style="font-size:15px;color:#4A4550;line-height:1.7;">
+            Templates manage <b>allowed companies</b> (merged or replaced) and the <b>default / active company</b>.
+            The engine keeps them consistent automatically: an enforced default company is always added to the
+            allowed companies; otherwise the first allowed company becomes the default.
+        </p>
+        <img src="screenshots/07_template_companies.png" alt="Companies tab" class="img-fluid"
+             style="border:1px solid #E4DDE2;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.08);width:100%;"/>
+    </div>
+
+    <!-- 7 -->
+    <div style="margin-bottom:56px;">
+        <h3 style="font-size:22px;font-weight:700;color:#875A7B;margin-bottom:8px;">7. Effective configuration: see the resolved result</h3>
+        <p style="font-size:15px;color:#4A4550;line-height:1.7;">
+            The <b>Effective Configuration</b> tab shows every setting after inheritance, with the mode used and the
+            template the value comes from. <b>Finance Managers</b> (Global Baseline &rarr; Accountants &rarr; Finance
+            Managers) inherits its time zone from the grandparent and its groups from Accountants.
+        </p>
+        <img src="screenshots/05_template_effective_configuration.png" alt="Effective configuration" class="img-fluid"
+             style="border:1px solid #E4DDE2;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.08);width:100%;"/>
+    </div>
+
+    <!-- 8 -->
+    <div style="margin-bottom:56px;">
+        <h3 style="font-size:22px;font-weight:700;color:#875A7B;margin-bottom:8px;">8. User tags for logical grouping</h3>
+        <p style="font-size:15px;color:#4A4550;line-height:1.7;">
+            Tags group users by team, role or status, with colours, user counts and the templates linked to each tag.
+            Members can be managed from the tag itself: adding or removing a member re-applies the auto-apply
+            templates for that user immediately.
+        </p>
+        <div class="row">
+            <div class="col-lg-6" style="margin-bottom:16px;">
+                <img src="screenshots/08_tags_list.png" alt="User tags list" class="img-fluid"
+                     style="border:1px solid #E4DDE2;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.08);width:100%;"/>
+            </div>
+            <div class="col-lg-6" style="margin-bottom:16px;">
+                <img src="screenshots/09_tag_form.png" alt="User tag form" class="img-fluid"
+                     style="border:1px solid #E4DDE2;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.08);width:100%;"/>
+            </div>
+        </div>
+    </div>
+
+    <!-- 9 -->
+    <div style="margin-bottom:56px;">
+        <h3 style="font-size:22px;font-weight:700;color:#875A7B;margin-bottom:8px;">9. Tags on the users list</h3>
+        <p style="font-size:15px;color:#4A4550;line-height:1.7;">
+            The standard users list shows each user's tags; you can search and group users by tag.
+        </p>
+        <img src="screenshots/10_users_list_tags.png" alt="Users list with tags" class="img-fluid"
+             style="border:1px solid #E4DDE2;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.08);width:100%;"/>
+    </div>
+
+    <!-- 10 -->
+    <div style="margin-bottom:56px;">
+        <h3 style="font-size:22px;font-weight:700;color:#875A7B;margin-bottom:8px;">10. Templates &amp; Tags tab on the user form</h3>
+        <p style="font-size:15px;color:#4A4550;line-height:1.7;">
+            Each user gets a <b>Templates &amp; Tags</b> tab: their tags, the templates that apply to them in
+            precedence order, an <b>Apply Templates Now</b> button and the history of every change made by the engine.
+        </p>
+        <img src="screenshots/11_user_templates_tab.png" alt="User templates tab" class="img-fluid"
+             style="border:1px solid #E4DDE2;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.08);width:100%;"/>
+    </div>
+
+    <!-- 11 -->
+    <div style="margin-bottom:56px;">
+        <h3 style="font-size:22px;font-weight:700;color:#875A7B;margin-bottom:8px;">11. Bulk application with dry-run preview</h3>
+        <p style="font-size:15px;color:#4A4550;line-height:1.7;">
+            The bulk wizard targets selected users, users with given tags, the audience of chosen templates, or all
+            active users. Choose to <b>resolve all applicable templates</b> (recommended) or apply only selected
+            templates. Before anything is written, the <b>preview</b> lists every user and setting that will change,
+            with before and after values. Users who already match are skipped.
+        </p>
+        <img src="screenshots/12_bulk_wizard_preview.png" alt="Bulk apply wizard with preview" class="img-fluid"
+             style="border:1px solid #E4DDE2;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.08);width:100%;"/>
+    </div>
+
+    <!-- 12 -->
+    <div style="margin-bottom:56px;">
+        <h3 style="font-size:22px;font-weight:700;color:#875A7B;margin-bottom:8px;">12. Bulk action from the users list</h3>
+        <p style="font-size:15px;color:#4A4550;line-height:1.7;">
+            Select any users and choose <b>Actions &rarr; Apply User Templates</b> to open the wizard pre-filled with
+            your selection. The same action exists on the tags list, the tag form and the template form.
+        </p>
+        <img src="screenshots/14_users_action_menu.png" alt="Apply user templates action" class="img-fluid"
+             style="border:1px solid #E4DDE2;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.08);width:100%;"/>
+    </div>
+
+    <!-- 13 -->
+    <div style="margin-bottom:56px;">
+        <h3 style="font-size:22px;font-weight:700;color:#875A7B;margin-bottom:8px;">13. Complete audit log</h3>
+        <p style="font-size:15px;color:#4A4550;line-height:1.7;">
+            Every application is logged: date, user, trigger (<i>User Creation</i>, <i>Tag Change</i>,
+            <i>Bulk Wizard</i>, <i>Manual</i>, <i>Scheduled Sync</i>), the templates involved, who applied it and the
+            exact changes. Re-applying templates that are already in place produces no change and no new entry.
+        </p>
+        <img src="screenshots/13_application_log.png" alt="Application log" class="img-fluid"
+             style="border:1px solid #E4DDE2;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.08);width:100%;"/>
+    </div>
+</section>
+
+<!-- RULES -->
+<section style="background:#FAF7F9;padding:36px 0;margin:16px 0;">
+    <div class="container" style="padding:0 16px;">
+        <h2 style="font-size:28px;font-weight:700;color:#2D2A32;text-align:center;margin-bottom:24px;">Merge vs Override: the rules</h2>
+        <div class="table-responsive">
+            <table class="table" style="background:#fff;font-size:15px;border:1px solid #E4DDE2;">
+                <thead style="background:#875A7B;color:#fff;">
+                    <tr>
+                        <th style="padding:12px;">Setting type</th>
+                        <th style="padding:12px;">Merge (Additive)</th>
+                        <th style="padding:12px;">Override (Strict)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding:12px;"><b>Single value</b><br/><span style="color:#6B6570;">language, time zone, home action, default company</span></td>
+                        <td style="padding:12px;">Filled only when the user has no value</td>
+                        <td style="padding:12px;">Always written; the later template wins</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:12px;"><b>List</b><br/><span style="color:#6B6570;">access groups, allowed companies</span></td>
+                        <td style="padding:12px;">Added to what the user already has</td>
+                        <td style="padding:12px;">Replaces the list (the user type is always kept)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:12px;"><b>Revoked groups</b></td>
+                        <td style="padding:12px;" colspan="2">Always removed, after the template's own grants</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <ul style="font-size:15px;color:#4A4550;line-height:1.8;max-width:900px;margin:12px auto 0;">
+            <li>Templates apply in ascending <b>sequence</b>; for equal sequences, the older template first.</li>
+            <li>With <i>Inherit from Parent</i>, the <b>value</b> comes from the nearest ancestor that sets it, the
+                <b>mode</b> always from the template being applied.</li>
+            <li>Each setting can follow the template's default mode or have its own.</li>
+            <li>Implied groups are taken into account, so results are stable and repeatable.</li>
+        </ul>
+    </div>
+</section>
+
+<!-- AUTOMATION + SECURITY -->
+<section class="container" style="padding:24px 16px;">
+    <div class="row">
+        <div class="col-md-6" style="margin-bottom:20px;">
+            <div style="height:100%;border:1px solid #E4DDE2;border-radius:10px;padding:24px;">
+                <h3 style="font-size:20px;font-weight:700;color:#2D2A32;margin:0 0 12px;">When templates are applied</h3>
+                <ul style="font-size:15px;color:#4A4550;line-height:1.8;padding-left:20px;margin:0;">
+                    <li>Automatically when a <b>user is created</b>.</li>
+                    <li>Automatically when a user's <b>tags change</b>, from the user or from the tag.</li>
+                    <li>On demand from the user, tag or template form.</li>
+                    <li>In bulk with the wizard or the <b>Actions</b> menu.</li>
+                    <li>Optionally every day with the scheduled action <i>"User Templates: re-synchronise all users"</i>
+                        (inactive by default).</li>
+                </ul>
+                <p style="font-size:14px;color:#6B6570;margin:12px 0 0;">Each template has an <b>Auto Apply</b> switch.</p>
+            </div>
+        </div>
+        <div class="col-md-6" style="margin-bottom:20px;">
+            <div style="height:100%;border:1px solid #E4DDE2;border-radius:10px;padding:24px;">
+                <h3 style="font-size:20px;font-weight:700;color:#2D2A32;margin:0 0 12px;">Security and safeguards</h3>
+                <ul style="font-size:15px;color:#4A4550;line-height:1.8;padding-left:20px;margin:0;">
+                    <li>New group <b>User Template Manager</b> (includes <i>Access Rights</i>); every <i>Settings</i>
+                        user gets it.</li>
+                    <li>Only managers can edit user tags, so tags cannot be used to escalate privileges.</li>
+                    <li><b>Protect Admins</b>: administrators' groups are never modified.</li>
+                    <li>Portal users never receive internal access groups.</li>
+                    <li>Template inheritance loops are blocked.</li>
+                    <li>Optional <b>owner company</b> per template, with a multi-company record rule.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- DEMO DATA -->
+<section class="container" style="padding:8px 16px 24px;">
+    <div style="border:1px dashed #C9A9C0;border-radius:10px;padding:24px;background:#FFFDFE;">
+        <h3 style="font-size:20px;font-weight:700;color:#2D2A32;margin:0 0 12px;">Try it with the demo data</h3>
+        <div class="row">
+            <div class="col-md-6">
+                <p style="font-size:15px;color:#4A4550;margin-bottom:6px;"><b>Tags:</b> Finance Team, Sales Team, Management, External Contractors.</p>
+                <p style="font-size:15px;color:#4A4550;margin-bottom:6px;"><b>Templates:</b> Global Baseline, Accountants, Sales Reps, Finance Managers,
+                    Restricted Contractors, and one archived legacy template.</p>
+            </div>
+            <div class="col-md-6">
+                <p style="font-size:15px;color:#4A4550;margin-bottom:6px;"><b>Users</b> (login = password):
+                    <code>ute_accountant</code>, <code>ute_sales</code>, <code>ute_manager</code>, <code>ute_contractor</code>.</p>
+                <p style="font-size:15px;color:#4A4550;margin-bottom:6px;">Go to <b>Settings &rarr; Users &amp; Companies &rarr; User Templates</b>.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TECHNICAL -->
+<section style="background:#2D2A32;padding:36px 0;margin-top:16px;">
+    <div class="container" style="padding:0 16px;">
+        <div class="row">
+            <div class="col-md-6" style="margin-bottom:20px;">
+                <h3 style="font-size:20px;font-weight:700;color:#fff;margin:0 0 12px;">Technical information</h3>
+                <ul style="font-size:14px;color:#D8D2DC;line-height:1.8;padding-left:20px;margin:0;">
+                    <li>Technical name: <code style="color:#F3C6E4;">base_user_template_engine</code></li>
+                    <li>Odoo version: 18.0 (Community &amp; Enterprise)</li>
+                    <li>Depends on: <code style="color:#F3C6E4;">base</code>, <code style="color:#F3C6E4;">web</code> only</li>
+                    <li>Models: <code style="color:#F3C6E4;">res.users.template</code>, <code style="color:#F3C6E4;">res.users.tag</code>,
+                        <code style="color:#F3C6E4;">res.users.template.log</code>, bulk wizard</li>
+                    <li>Changes are computed in memory, then written in batches</li>
+                    <li>26 automated tests (precedence, conflicts, inheritance, safety, wizard, idempotency)</li>
+                    <li>License: LGPL-3</li>
+                </ul>
+            </div>
+            <div class="col-md-6" style="margin-bottom:20px;">
+                <h3 style="font-size:20px;font-weight:700;color:#fff;margin:0 0 12px;">Author &amp; support</h3>
+                <p style="font-size:15px;color:#D8D2DC;line-height:1.7;">
+                    Developed by <b style="color:#fff;">Ibrahim Yahia</b>, Odoo functional consultant.<br/>
+                    For questions, customisations or support, get in touch on LinkedIn:
+                </p>
+                <a href="https://www.linkedin.com/in/ibrahim-yahia" target="_blank"
+                   style="display:inline-block;background:#875A7B;color:#fff;text-decoration:none;border-radius:6px;padding:10px 22px;font-weight:600;">
+                    linkedin.com/in/ibrahim-yahia
+                </a>
+            </div>
+        </div>
+    </div>
+</section>

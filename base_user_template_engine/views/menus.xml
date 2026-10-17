@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_user_template_root" name="User Templates" parent="base.menu_users"
+              sequence="40" groups="group_user_template_manager"/>
+    <menuitem id="menu_user_templates" action="action_res_users_template"
+              parent="menu_user_template_root" sequence="10"/>
+    <menuitem id="menu_user_tags" action="action_res_users_tag"
+              parent="menu_user_template_root" sequence="20"/>
+    <menuitem id="menu_user_template_apply" action="action_res_users_template_apply_wizard"
+              parent="menu_user_template_root" sequence="30"/>
+    <menuitem id="menu_user_template_log" action="action_res_users_template_log"
+              parent="menu_user_template_root" sequence="40"/>
+</odoo>

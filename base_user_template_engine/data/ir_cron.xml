@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="ir_cron_user_template_sync" model="ir.cron">
+        <field name="name">User Templates: re-synchronise all users</field>
+        <field name="model_id" ref="model_res_users_template"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_apply_all()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active" eval="False"/>
+    </record>
+</odoo>

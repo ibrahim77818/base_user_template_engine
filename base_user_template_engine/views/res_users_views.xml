@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_users_form_inherit_template_engine" model="ir.ui.view">
+        <field name="name">res.users.form.inherit.template.engine</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Templates &amp; Tags" name="user_templates"
+                      groups="base_user_template_engine.group_user_template_manager">
+                    <group>
+                        <group>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        </group>
+                        <group>
+                            <button name="action_apply_user_templates" type="object" icon="fa-magic"
+                                    string="Apply Templates Now" class="btn-secondary" invisible="not id"/>
+                        </group>
+                    </group>
+                    <separator string="Applicable Templates (precedence order)"/>
+                    <field name="applicable_template_ids" readonly="1">
+                        <list>
+                            <field name="sequence"/>
+                            <field name="name"/>
+                            <field name="scope"/>
+                            <field name="apply_mode"/>
+                            <field name="auto_apply"/>
+                        </list>
+                    </field>
+                    <separator string="History"/>
+                    <field name="template_log_ids" readonly="1">
+                        <list>
+                            <field name="create_date" string="Date"/>
+                            <field name="trigger"/>
+                            <field name="template_ids" widget="many2many_tags"/>
+                            <field name="changes"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_users_list_inherit_template_engine" model="ir.ui.view">
+        <field name="name">res.users.list.inherit.template.engine</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_tree"/>
+        <field name="arch" type="xml">
+            <field name="login" position="after">
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"
+                       optional="show" groups="base_user_template_engine.group_user_template_manager"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_users_search_inherit_template_engine" model="ir.ui.view">
+        <field name="name">res.users.search.inherit.template.engine</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field name="tag_ids" groups="base_user_template_engine.group_user_template_manager"/>
+                <filter name="groupby_user_tag" string="User Tags" context="{'group_by': 'tag_ids'}"
+                        groups="base_user_template_engine.group_user_template_manager"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_res_users_template_log_list" model="ir.ui.view">
+        <field name="name">res.users.template.log.list</field>
+        <field name="model">res.users.template.log</field>
+        <field name="arch" type="xml">
+            <list string="Template Application Log" create="0" edit="0">
+                <field name="create_date" string="Date"/>
+                <field name="user_id"/>
+                <field name="trigger"/>
+                <field name="template_ids" widget="many2many_tags"/>
+                <field name="create_uid" string="Applied By" optional="show"/>
+                <field name="changes" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_res_users_template_log_form" model="ir.ui.view">
+        <field name="name">res.users.template.log.form</field>
+        <field name="model">res.users.template.log</field>
+        <field name="arch" type="xml">
+            <form string="Template Application" create="0" edit="0">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="user_id"/>
+                            <field name="trigger"/>
+                        </group>
+                        <group>
+                            <field name="create_date" string="Date"/>
+                            <field name="create_uid" string="Applied By"/>
+                        </group>
+                    </group>
+                    <field name="template_ids" widget="many2many_tags"/>
+                    <separator string="Changes"/>
+                    <field name="changes"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_res_users_template_log_search" model="ir.ui.view">
+        <field name="name">res.users.template.log.search</field>
+        <field name="model">res.users.template.log</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="user_id"/>
+                <field name="template_ids"/>
+                <filter name="groupby_user" string="User" context="{'group_by': 'user_id'}"/>
+                <filter name="groupby_trigger" string="Trigger" context="{'group_by': 'trigger'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_res_users_template_log" model="ir.actions.act_window">
+        <field name="name">Application Log</field>
+        <field name="res_model">res.users.template.log</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

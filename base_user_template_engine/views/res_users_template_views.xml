@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_res_users_template_list" model="ir.ui.view">
+        <field name="name">res.users.template.list</field>
+        <field name="model">res.users.template</field>
+        <field name="arch" type="xml">
+            <list string="User Templates">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="scope"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="parent_id" optional="show"/>
+                <field name="apply_mode"/>
+                <field name="auto_apply" optional="show"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+                <field name="active" widget="boolean_toggle" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_res_users_template_form" model="ir.ui.view">
+        <field name="name">res.users.template.form</field>
+        <field name="model">res.users.template</field>
+        <field name="arch" type="xml">
+            <form string="User Template">
+                <header>
+                    <button name="action_open_apply_wizard" type="object" string="Apply to Users"
+                            class="btn-primary" icon="fa-magic" invisible="not id"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_audience" type="object" class="oe_stat_button" icon="fa-users">
+                            <field name="audience_count" widget="statinfo" string="Targeted Users"/>
+                        </button>
+                        <button name="action_view_children" type="object" class="oe_stat_button" icon="fa-sitemap">
+                            <field name="child_count" widget="statinfo" string="Child Templates"/>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <field name="active" invisible="1"/>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="e.g. Accountants"/></h1>
+                    </div>
+                    <group>
+                        <group string="Targeting">
+                            <field name="scope" widget="radio"/>
+                            <field name="include_portal" invisible="scope != 'global'"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"
+                                   invisible="scope == 'global'"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group string="Behaviour">
+                            <field name="sequence"/>
+                            <field name="apply_mode" widget="radio"/>
+                            <field name="parent_id"/>
+                            <field name="auto_apply"/>
+                            <field name="protect_admins"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Preferences" name="preferences">
+                            <group>
+                                <group string="Language">
+                                    <field name="lang_policy"/>
+                                    <field name="lang" invisible="lang_policy != 'own'" required="lang_policy == 'own'"/>
+                                    <field name="lang_mode" invisible="lang_policy == 'skip'"/>
+                                </group>
+                                <group string="Timezone">
+                                    <field name="tz_policy"/>
+                                    <field name="tz" invisible="tz_policy != 'own'" required="tz_policy == 'own'"/>
+                                    <field name="tz_mode" invisible="tz_policy == 'skip'"/>
+                                </group>
+                                <group string="Home Action">
+                                    <field name="home_action_id_policy"/>
+                                    <field name="home_action_id" invisible="home_action_id_policy != 'own'"/>
+                                    <field name="home_action_id_mode" invisible="home_action_id_policy == 'skip'"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Companies" name="companies">
+                            <group>
+                                <group string="Allowed Companies">
+                                    <field name="allowed_company_ids_policy"/>
+                                    <field name="allowed_company_ids" widget="many2many_tags"
+                                           invisible="allowed_company_ids_policy != 'own'"/>
+                                    <field name="allowed_company_ids_mode" invisible="allowed_company_ids_policy == 'skip'"/>
+                                </group>
+                                <group string="Default Company">
+                                    <field name="default_company_id_policy"/>
+                                    <field name="default_company_id"
+                                           invisible="default_company_id_policy != 'own'"
+                                           required="default_company_id_policy == 'own'"/>
+                                    <field name="default_company_id_mode" invisible="default_company_id_policy == 'skip'"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Access Rights" name="access_rights">
+                            <group>
+                                <group string="Granted Groups">
+                                    <field name="group_ids_policy"/>
+                                    <field name="group_ids_mode" invisible="group_ids_policy == 'skip'"/>
+                                </group>
+                                <group string="Revoked Groups">
+                                    <field name="group_remove_ids_policy"/>
+                                </group>
+                            </group>
+                            <field name="group_ids" invisible="group_ids_policy != 'own'"
+                                   options="{'no_create': True}">
+                                <list>
+                                    <field name="full_name"/>
+                                    <field name="comment" optional="show"/>
+                                </list>
+                            </field>
+                            <separator string="Groups to Revoke" invisible="group_remove_ids_policy != 'own'"/>
+                            <field name="group_remove_ids" invisible="group_remove_ids_policy != 'own'"
+                                   options="{'no_create': True}">
+                                <list>
+                                    <field name="full_name"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Explicit Users" name="explicit_users" invisible="scope == 'global'">
+                            <field name="user_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="login"/>
+                                    <field name="company_id" groups="base.group_multi_company"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Effective Configuration" name="effective">
+                            <p class="text-muted">
+                                Fully resolved values after inheritance, as they will be applied to users.
+                                Save the template to refresh.
+                            </p>
+                            <field name="effective_summary_html" nolabel="1"/>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="description" placeholder="Purpose of this template..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_res_users_template_search" model="ir.ui.view">
+        <field name="name">res.users.template.search</field>
+        <field name="model">res.users.template</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="tag_ids"/>
+                <field name="parent_id"/>
+                <field name="group_ids"/>
+                <filter name="filter_global" string="Global" domain="[('scope', '=', 'global')]"/>
+                <filter name="filter_targeted" string="Targeted" domain="[('scope', '=', 'targeted')]"/>
+                <separator/>
+                <filter name="filter_override" string="Override Mode" domain="[('apply_mode', '=', 'override')]"/>
+                <filter name="filter_auto" string="Auto-Apply" domain="[('auto_apply', '=', True)]"/>
+                <separator/>
+                <filter name="filter_archived" string="Archived" domain="[('active', '=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter name="groupby_scope" string="Scope" context="{'group_by': 'scope'}"/>
+                    <filter name="groupby_parent" string="Parent" context="{'group_by': 'parent_id'}"/>
+                    <filter name="groupby_mode" string="Mode" context="{'group_by': 'apply_mode'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_res_users_template" model="ir.actions.act_window">
+        <field name="name">User Templates</field>
+        <field name="res_model">res.users.template</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_res_users_template_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create your first user template</p>
+            <p>Bundle languages, timezones, companies and access groups, inherit them
+               between templates and apply them in bulk using user tags.</p>
+        </field>
+    </record>
+</odoo>
