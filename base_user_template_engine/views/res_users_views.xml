@@ -9,32 +9,30 @@
                 <page string="Templates &amp; Tags" name="user_templates"
                       groups="base_user_template_engine.group_user_template_manager">
                     <group>
-                        <group>
-                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                        </group>
-                        <group>
-                            <button name="action_apply_user_templates" type="object" icon="fa-magic"
-                                    string="Apply Templates Now" class="btn-secondary" invisible="not id"/>
-                        </group>
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     </group>
+                    <div class="mb-3" invisible="not id">
+                        <button name="action_apply_user_templates" type="object" icon="fa-magic"
+                                string="Apply Templates Now" class="btn-secondary"/>
+                    </div>
                     <separator string="Applicable Templates (precedence order)"/>
                     <field name="applicable_template_ids" readonly="1">
-                        <list>
+                        <tree>
                             <field name="sequence"/>
                             <field name="name"/>
                             <field name="scope"/>
                             <field name="apply_mode"/>
                             <field name="auto_apply"/>
-                        </list>
+                        </tree>
                     </field>
                     <separator string="History"/>
                     <field name="template_log_ids" readonly="1">
-                        <list>
+                        <tree>
                             <field name="create_date" string="Date"/>
                             <field name="trigger"/>
                             <field name="template_ids" widget="many2many_tags"/>
                             <field name="changes"/>
-                        </list>
+                        </tree>
                     </field>
                 </page>
             </xpath>

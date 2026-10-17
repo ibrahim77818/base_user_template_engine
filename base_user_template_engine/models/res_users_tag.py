@@ -46,7 +46,7 @@ class ResUsersTag(models.Model):
             "type": "ir.actions.act_window",
             "name": _("Users"),
             "res_model": "res.users",
-            "view_mode": "list,form",
+            "view_mode": "tree,form",
             "domain": [("tag_ids", "in", self.ids)],
         }
 

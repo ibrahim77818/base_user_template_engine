@@ -3,7 +3,7 @@
     "name": "User Template Engine",
     "summary": "Multi-template user provisioning: inheritance, tags, merge/override "
                "policies and bulk application of access rights and preferences.",
-    "version": "18.0.1.0.0",
+    "version": "17.0.1.0.0",
     "category": "Administration",
     "author": "Ibrahim Yahia",
     "website": "https://www.linkedin.com/in/ibrahim-yahia",

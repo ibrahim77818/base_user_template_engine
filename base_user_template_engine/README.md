@@ -1,4 +1,4 @@
-# User Template Engine (`base_user_template_engine`) — Odoo 18
+# User Template Engine (`base_user_template_engine`) — Odoo 17
 
 Provision users from layered, inheritable templates of preferences and access rights,
 targeted by user tags and applied automatically or in bulk.

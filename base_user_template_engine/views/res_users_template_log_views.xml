@@ -4,14 +4,14 @@
         <field name="name">res.users.template.log.list</field>
         <field name="model">res.users.template.log</field>
         <field name="arch" type="xml">
-            <list string="Template Application Log" create="0" edit="0">
+            <tree string="Template Application Log" create="0" edit="0">
                 <field name="create_date" string="Date"/>
                 <field name="user_id"/>
                 <field name="trigger"/>
                 <field name="template_ids" widget="many2many_tags"/>
                 <field name="create_uid" string="Applied By" optional="show"/>
                 <field name="changes" optional="show"/>
-            </list>
+            </tree>
         </field>
     </record>
 
@@ -55,6 +55,6 @@
     <record id="action_res_users_template_log" model="ir.actions.act_window">
         <field name="name">Application Log</field>
         <field name="res_model">res.users.template.log</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">tree,form</field>
     </record>
 </odoo>

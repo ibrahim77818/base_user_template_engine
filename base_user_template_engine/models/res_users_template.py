@@ -563,7 +563,7 @@ class ResUsersTemplate(models.Model):
             "type": "ir.actions.act_window",
             "name": _("Targeted Users"),
             "res_model": "res.users",
-            "view_mode": "list,form",
+            "view_mode": "tree,form",
             "domain": [("id", "in", self._get_audience_users().ids)],
         }
 
@@ -573,7 +573,7 @@ class ResUsersTemplate(models.Model):
             "type": "ir.actions.act_window",
             "name": _("Child Templates"),
             "res_model": "res.users.template",
-            "view_mode": "list,form",
+            "view_mode": "tree,form",
             "domain": [("parent_id", "=", self.id)],
             "context": {"default_parent_id": self.id},
         }

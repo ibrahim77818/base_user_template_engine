@@ -4,7 +4,7 @@
         <field name="name">res.users.template.list</field>
         <field name="model">res.users.template</field>
         <field name="arch" type="xml">
-            <list string="User Templates">
+            <tree string="User Templates">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="scope"/>
@@ -14,7 +14,7 @@
                 <field name="auto_apply" optional="show"/>
                 <field name="company_id" groups="base.group_multi_company" optional="hide"/>
                 <field name="active" widget="boolean_toggle" optional="show"/>
-            </list>
+            </tree>
         </field>
     </record>
 
@@ -107,26 +107,26 @@
                             </group>
                             <field name="group_ids" invisible="group_ids_policy != 'own'"
                                    options="{'no_create': True}">
-                                <list>
+                                <tree>
                                     <field name="full_name"/>
                                     <field name="comment" optional="show"/>
-                                </list>
+                                </tree>
                             </field>
                             <separator string="Groups to Revoke" invisible="group_remove_ids_policy != 'own'"/>
                             <field name="group_remove_ids" invisible="group_remove_ids_policy != 'own'"
                                    options="{'no_create': True}">
-                                <list>
+                                <tree>
                                     <field name="full_name"/>
-                                </list>
+                                </tree>
                             </field>
                         </page>
                         <page string="Explicit Users" name="explicit_users" invisible="scope == 'global'">
                             <field name="user_ids">
-                                <list>
+                                <tree>
                                     <field name="name"/>
                                     <field name="login"/>
                                     <field name="company_id" groups="base.group_multi_company"/>
-                                </list>
+                                </tree>
                             </field>
                         </page>
                         <page string="Effective Configuration" name="effective">
@@ -173,7 +173,7 @@
     <record id="action_res_users_template" model="ir.actions.act_window">
         <field name="name">User Templates</field>
         <field name="res_model">res.users.template</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">tree,form</field>
         <field name="search_view_id" ref="view_res_users_template_search"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">Create your first user template</p>
