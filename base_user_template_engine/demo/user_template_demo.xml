@@ -118,7 +118,7 @@
         <field name="password">ute_accountant</field>
         <field name="company_id" ref="base.main_company"/>
         <field name="company_ids" eval="[Command.set([ref('base.main_company')])]"/>
-        <field name="groups_id" eval="[Command.set([ref('base.group_user')])]"/>
+        <field name="group_ids" eval="[Command.set([ref('base.group_user')])]"/>
         <field name="tz">Europe/Paris</field>
         <field name="tag_ids" eval="[Command.set([ref('demo_tag_finance')])]"/>
     </record>
@@ -129,7 +129,7 @@
         <field name="password">ute_sales</field>
         <field name="company_id" ref="base.main_company"/>
         <field name="company_ids" eval="[Command.set([ref('base.main_company')])]"/>
-        <field name="groups_id" eval="[Command.set([ref('base.group_user')])]"/>
+        <field name="group_ids" eval="[Command.set([ref('base.group_user')])]"/>
         <field name="tag_ids" eval="[Command.set([ref('demo_tag_sales')])]"/>
     </record>
 
@@ -139,7 +139,7 @@
         <field name="password">ute_manager</field>
         <field name="company_id" ref="base.main_company"/>
         <field name="company_ids" eval="[Command.set([ref('base.main_company')])]"/>
-        <field name="groups_id" eval="[Command.set([ref('base.group_user')])]"/>
+        <field name="group_ids" eval="[Command.set([ref('base.group_user')])]"/>
         <field name="tag_ids" eval="[Command.set([ref('demo_tag_finance'), ref('demo_tag_management')])]"/>
     </record>
 
@@ -149,7 +149,7 @@
         <field name="password">ute_contractor</field>
         <field name="company_id" ref="base.main_company"/>
         <field name="company_ids" eval="[Command.set([ref('base.main_company')])]"/>
-        <field name="groups_id" eval="[Command.set([ref('base.group_user'), ref('base.group_partner_manager')])]"/>
+        <field name="group_ids" eval="[Command.set([ref('base.group_user'), ref('base.group_partner_manager')])]"/>
         <field name="tag_ids" eval="[Command.set([ref('demo_tag_sales'), ref('demo_tag_contractor')])]"/>
     </record>
 

@@ -56,7 +56,7 @@ TEMPLATE_ATTRIBUTES = OrderedDict([
     ("home_action_id", {"kind": "scalar", "user_field": "action_id", "label": "Home Action"}),
     ("allowed_company_ids", {"kind": "multi", "user_field": "company_ids", "label": "Allowed Companies"}),
     ("default_company_id", {"kind": "scalar", "user_field": "company_id", "label": "Default Company"}),
-    ("group_ids", {"kind": "multi", "user_field": "groups_id", "label": "Access Groups",
+    ("group_ids", {"kind": "multi", "user_field": "group_ids", "label": "Access Groups",
                    "groups": True}),
     ("group_remove_ids", {"kind": "remove", "target": "group_ids", "label": "Revoked Groups",
                           "groups": True}),
@@ -168,10 +168,9 @@ class ResUsersTemplate(models.Model):
 
     @api.model
     def _get_user_type_groups(self):
-        category = self.env.ref("base.module_category_user_type", raise_if_not_found=False)
-        if not category:
-            return self.env["res.groups"].sudo().browse()
-        return self.env["res.groups"].sudo().search([("category_id", "=", category.id)])
+        # Odoo 19: user types (Internal / Portal / Public) are no longer an
+        # ir.module.category; res.groups exposes them directly.
+        return self.env["res.groups"].sudo()._get_user_type_groups()
 
     @api.model
     def _get_assignable_groups_domain(self):
@@ -355,8 +354,12 @@ class ResUsersTemplate(models.Model):
 
     @api.model
     def _close_groups(self, group_ids):
+        """Effective groups: the groups themselves plus every implied group.
+
+        Odoo 19: ``all_implied_ids`` already contains the group itself.
+        """
         groups = self.env["res.groups"].sudo().browse(group_ids)
-        return set((groups | groups.trans_implied_ids).ids)
+        return set(groups.ids) | set(groups.all_implied_ids.ids)
 
     def _compute_user_plan(self, user, templates, effective_cache):
         """Simulate the ordered application of ``templates`` on ``user``.
@@ -366,7 +369,10 @@ class ResUsersTemplate(models.Model):
         initial = self._read_user_state(user)
         state = {k: (set(v) if isinstance(v, set) else v) for k, v in initial.items()}
         is_admin = user._is_system()
-        user_type_ids = set(user.groups_id.ids) & set(self._get_user_type_groups().ids)
+        # Odoo 19: ``group_ids`` holds explicit groups only, ``all_group_ids``
+        # adds implied ones. The engine edits explicit groups and compares
+        # effective ones.
+        user_type_ids = set(user.all_group_ids.ids) & set(self._get_user_type_groups().ids)
         company_explicit = False
         applied = self.browse()
 
@@ -404,7 +410,11 @@ class ResUsersTemplate(models.Model):
                 applied |= tmpl
 
         # -- post-processing ------------------------------------------------
-        state["group_ids"] = self._close_groups(state["group_ids"])
+        # Only write groups when the EFFECTIVE result differs: adding a group
+        # that is already implied, or removing one that stays implied, is a
+        # no-op and must not create writes or log noise.
+        if self._close_groups(state["group_ids"]) == self._close_groups(initial["group_ids"]):
+            state["group_ids"] = set(initial["group_ids"])
         if state["default_company_id"] not in state["allowed_company_ids"]:
             if company_explicit or not state["allowed_company_ids"]:
                 state["allowed_company_ids"].add(state["default_company_id"])
@@ -513,6 +523,9 @@ class ResUsersTemplate(models.Model):
             if before == after:
                 continue
             label = TEMPLATE_ATTRIBUTES[attr]["label"]
+            if attr == "group_ids":
+                # Report the change in EFFECTIVE groups, as an administrator sees them.
+                before, after = self._close_groups(before), self._close_groups(after)
             if TEMPLATE_ATTRIBUTES[attr]["kind"] == "multi":
                 added = self._format_value(attr, sorted(after - before))
                 removed = self._format_value(attr, sorted(before - after))
@@ -563,7 +576,7 @@ class ResUsersTemplate(models.Model):
             "type": "ir.actions.act_window",
             "name": _("Targeted Users"),
             "res_model": "res.users",
-            "view_mode": "tree,form",
+            "view_mode": "list,form",
             "domain": [("id", "in", self._get_audience_users().ids)],
         }
 
@@ -573,7 +586,7 @@ class ResUsersTemplate(models.Model):
             "type": "ir.actions.act_window",
             "name": _("Child Templates"),
             "res_model": "res.users.template",
-            "view_mode": "tree,form",
+            "view_mode": "list,form",
             "domain": [("parent_id", "=", self.id)],
             "context": {"default_parent_id": self.id},
         }

@@ -18,9 +18,10 @@ class ResUsersTag(models.Model):
         string="Templates")
     user_count = fields.Integer(compute="_compute_user_count")
 
-    _sql_constraints = [
-        ("name_uniq", "unique(name)", "A user tag with this name already exists."),
-    ]
+    _name_uniq = models.Constraint(
+        "UNIQUE(name)",
+        "A user tag with this name already exists.",
+    )
 
     @api.depends("user_ids")
     def _compute_user_count(self):
@@ -46,7 +47,7 @@ class ResUsersTag(models.Model):
             "type": "ir.actions.act_window",
             "name": _("Users"),
             "res_model": "res.users",
-            "view_mode": "tree,form",
+            "view_mode": "list,form",
             "domain": [("tag_ids", "in", self.ids)],
         }
 

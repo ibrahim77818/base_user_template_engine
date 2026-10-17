@@ -1,5 +1,5 @@
 <!-- ================================================================= -->
-<!--  User Template Engine (base_user_template_engine) - Odoo 17        -->
+<!--  User Template Engine (base_user_template_engine) - Odoo 19        -->
 <!--  Author: Ibrahim Yahia                                            -->
 <!-- ================================================================= -->
 
@@ -8,7 +8,7 @@
     <div class="row align-items-center">
         <div class="col-lg-6" style="margin-bottom:24px;">
             <p style="font-size:13px;letter-spacing:3px;text-transform:uppercase;color:#875A7B;font-weight:600;margin-bottom:8px;">
-                Odoo 17 &middot; Administration &middot; Users &amp; Access Rights
+                Odoo 19 &middot; Administration &middot; Users &amp; Access Rights
             </p>
             <h1 style="font-size:40px;font-weight:700;color:#2D2A32;line-height:1.15;margin:0 0 16px;">
                 User Template Engine
@@ -116,7 +116,7 @@
 <section class="container" style="padding:24px 16px;">
     <h2 style="font-size:28px;font-weight:700;color:#2D2A32;text-align:center;margin-bottom:8px;">Core functionalities</h2>
     <p style="font-size:15px;color:#6B6570;text-align:center;margin-bottom:36px;">
-        All screenshots are taken from Odoo 17 with the module's demo data.
+        All screenshots are taken from Odoo 19 with the module's demo data.
     </p>
 
     <!-- 1 -->
@@ -163,7 +163,7 @@
         <h3 style="font-size:22px;font-weight:700;color:#875A7B;margin-bottom:8px;">4. Access rights: grant and revoke groups</h3>
         <p style="font-size:15px;color:#4A4550;line-height:1.7;">
             Templates grant access groups and can also <b>revoke</b> groups explicitly. <b>Sales Reps</b> grants
-            <i>Contact Creation</i> and revokes the <i>export</i> right that the Global Baseline grants to everyone,
+            <i>Contact / Creation</i> and revokes the <i>Export / Allowed</i> right that the Global Baseline grants to everyone,
             showing conflict resolution between two templates. Internal / Portal / Public user-type groups cannot be
             selected, so a template can never change a user's type.
         </p>
@@ -347,8 +347,8 @@
             <div style="height:100%;border:1px solid #E4DDE2;border-radius:10px;padding:24px;">
                 <h3 style="font-size:20px;font-weight:700;color:#2D2A32;margin:0 0 12px;">Security and safeguards</h3>
                 <ul style="font-size:15px;color:#4A4550;line-height:1.8;padding-left:20px;margin:0;">
-                    <li>New group <b>User Template Manager</b> (includes <i>Access Rights</i>); every <i>Settings</i>
-                        user gets it.</li>
+                    <li>New group <b>User Template Manager</b> (includes <i>Access Rights</i>); every user with the
+                        <i>Administrator</i> role gets it.</li>
                     <li>Only managers can edit user tags, so tags cannot be used to escalate privileges.</li>
                     <li><b>Protect Admins</b>: administrators' groups are never modified.</li>
                     <li>Portal users never receive internal access groups.</li>
@@ -387,7 +387,7 @@
                 <h3 style="font-size:20px;font-weight:700;color:#fff;margin:0 0 12px;">Technical information</h3>
                 <ul style="font-size:14px;color:#D8D2DC;line-height:1.8;padding-left:20px;margin:0;">
                     <li>Technical name: <code style="color:#F3C6E4;">base_user_template_engine</code></li>
-                    <li>Odoo version: 17.0 (Community &amp; Enterprise)</li>
+                    <li>Odoo version: 19.0 (Community &amp; Enterprise)</li>
                     <li>Depends on: <code style="color:#F3C6E4;">base</code>, <code style="color:#F3C6E4;">web</code> only</li>
                     <li>Models: <code style="color:#F3C6E4;">res.users.template</code>, <code style="color:#F3C6E4;">res.users.tag</code>,
                         <code style="color:#F3C6E4;">res.users.template.log</code>, bulk wizard</li>

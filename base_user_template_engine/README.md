@@ -1,4 +1,4 @@
-# User Template Engine (`base_user_template_engine`) — Odoo 17
+# User Template Engine (`base_user_template_engine`) — Odoo 19
 
 Provision users from layered, inheritable templates of preferences and access rights,
 targeted by user tags and applied automatically or in bulk.
@@ -22,8 +22,8 @@ targeted by user tags and applied automatically or in bulk.
 | Home Action | `action_id` | scalar |
 | Allowed Companies | `company_ids` | multi |
 | Default Company | `company_id` | scalar |
-| Access Groups | `groups_id` | multi |
-| Revoked Groups | `groups_id` | subtract |
+| Access Groups | `group_ids` (explicit; compared via `all_group_ids`) | multi |
+| Revoked Groups | `group_ids` | subtract |
 
 Each attribute has a **policy** (`skip` / `own` / `inherit`) and a **mode**
 (`default` → template's `apply_mode`, `merge`, `override`).
@@ -42,7 +42,7 @@ Each attribute has a **policy** (`skip` / `own` / `inherit`) and a **mode**
 5. **Safety**
    - User-type groups (Internal/Portal/Public) are never granted, revoked or replaced.
    - Share (portal) users never receive access groups.
-   - `protect_admins` keeps Settings administrators' groups untouched.
+   - `protect_admins` keeps Administrator-role users' groups untouched.
    - Default company is forced into allowed companies (kept if explicitly enforced, otherwise
      the first allowed company is used).
    - Implied-group closure makes the engine idempotent: re-applying produces no writes.
@@ -58,7 +58,7 @@ Each attribute has a **policy** (`skip` / `own` / `inherit`) and a **mode**
 
 ## Security
 
-- New group **User Template Manager** (implies *Access Rights*); every *Settings* user gets it.
+- New group **User Template Manager** (implies *Access Rights*); every user with the *Administrator* role gets it.
 - `tag_ids` on users is restricted to managers, so tag-driven sudo application cannot be used
   for privilege escalation.
 - Multi-company record rule on templates (`company_id`).

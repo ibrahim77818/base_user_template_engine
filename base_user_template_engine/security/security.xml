@@ -5,12 +5,20 @@
         <field name="sequence">90</field>
     </record>
 
+    <!-- Odoo 19: groups are shown on the user form through a privilege
+         (res.groups.privilege), which belongs to a category. -->
+    <record id="res_groups_privilege_user_template" model="res.groups.privilege">
+        <field name="name">User Templates</field>
+        <field name="sequence">90</field>
+        <field name="category_id" ref="module_category_user_template_engine"/>
+    </record>
+
     <!-- Managing templates means managing access rights: requires "Access Rights". -->
     <record id="group_user_template_manager" model="res.groups">
         <field name="name">User Template Manager</field>
-        <field name="category_id" ref="module_category_user_template_engine"/>
+        <field name="privilege_id" ref="res_groups_privilege_user_template"/>
         <field name="implied_ids" eval="[Command.link(ref('base.group_erp_manager'))]"/>
-        <field name="users" eval="[Command.link(ref('base.user_root')), Command.link(ref('base.user_admin'))]"/>
+        <field name="user_ids" eval="[Command.link(ref('base.user_root')), Command.link(ref('base.user_admin'))]"/>
     </record>
 
     <!-- Every "Settings" administrator is a template manager. -->

@@ -98,7 +98,7 @@ class TestUserTemplateEngine(TransactionCase):
         self._tmpl(scope="global", sequence=30, group_ids_policy="own",
                    group_ids=[Command.set(self.g_currency.ids)])
         self._apply()
-        fin_groups, sales_groups = self.user_fin.groups_id, self.user_sales.groups_id
+        fin_groups, sales_groups = self.user_fin.all_group_ids, self.user_sales.all_group_ids
         self.assertNotIn(self.g_partner, fin_groups, "Override at seq 20 resets the baseline grant")
         self.assertIn(self.g_export, fin_groups)
         self.assertIn(self.g_currency, fin_groups, "Later merge adds on top of the override")
@@ -110,29 +110,29 @@ class TestUserTemplateEngine(TransactionCase):
     # Groups
     # ------------------------------------------------------------------
     def test_20_groups_merge_is_additive(self):
-        self.user_fin.groups_id = [Command.link(self.g_export.id)]
+        self.user_fin.group_ids = [Command.link(self.g_export.id)]
         self._tmpl(scope="global", group_ids_policy="own", group_ids=[Command.set(self.g_partner.ids)])
         self._apply()
-        self.assertIn(self.g_export, self.user_fin.groups_id)
-        self.assertIn(self.g_partner, self.user_fin.groups_id)
+        self.assertIn(self.g_export, self.user_fin.all_group_ids)
+        self.assertIn(self.g_partner, self.user_fin.all_group_ids)
 
     def test_21_groups_override_keeps_user_type(self):
-        self.user_fin.groups_id = [Command.link(self.g_export.id)]
+        self.user_fin.group_ids = [Command.link(self.g_export.id)]
         self._tmpl(scope="global", apply_mode="override", group_ids_policy="own",
                    group_ids=[Command.set(self.g_partner.ids)])
         self._apply()
-        self.assertIn(self.g_partner, self.user_fin.groups_id)
-        self.assertNotIn(self.g_export, self.user_fin.groups_id)
-        self.assertIn(self.g_user, self.user_fin.groups_id)
+        self.assertIn(self.g_partner, self.user_fin.all_group_ids)
+        self.assertNotIn(self.g_export, self.user_fin.all_group_ids)
+        self.assertIn(self.g_user, self.user_fin.all_group_ids)
         self.assertFalse(self.user_fin.share)
 
     def test_22_group_revocation(self):
-        self.user_fin.groups_id = [Command.link(self.g_export.id)]
+        self.user_fin.group_ids = [Command.link(self.g_export.id)]
         self._tmpl(scope="global", group_remove_ids_policy="own",
                    group_remove_ids=[Command.set(self.g_export.ids)])
         self._apply()
-        self.assertNotIn(self.g_export, self.user_fin.groups_id)
-        self.assertIn(self.g_user, self.user_fin.groups_id)
+        self.assertNotIn(self.g_export, self.user_fin.all_group_ids)
+        self.assertIn(self.g_user, self.user_fin.all_group_ids)
 
     def test_23_user_type_groups_forbidden(self):
         with self.assertRaises(ValidationError):
@@ -144,7 +144,7 @@ class TestUserTemplateEngine(TransactionCase):
         self._tmpl(scope="global", apply_mode="override", group_ids_policy="own",
                    group_ids=[Command.set(self.g_partner.ids)], tz_policy="own", tz="Asia/Riyadh")
         self._apply(admin)
-        self.assertIn(self.g_system, admin.groups_id, "Admin rights must never be stripped")
+        self.assertIn(self.g_system, admin.all_group_ids, "Admin rights must never be stripped")
         self.assertEqual(admin.tz, "Asia/Riyadh", "Preferences still apply to admins")
 
     def test_25_portal_users_never_receive_groups(self):
@@ -153,7 +153,7 @@ class TestUserTemplateEngine(TransactionCase):
                    tz_policy="own", tz="Asia/Riyadh")
         self._apply(self.user_portal)
         self.assertTrue(self.user_portal.share)
-        self.assertNotIn(self.g_partner, self.user_portal.groups_id)
+        self.assertNotIn(self.g_partner, self.user_portal.all_group_ids)
         self.assertEqual(self.user_portal.tz, "Asia/Riyadh")
 
     # ------------------------------------------------------------------
@@ -175,8 +175,8 @@ class TestUserTemplateEngine(TransactionCase):
         self.assertNotIn("lang", eff)
         self._apply(templates=child)
         self.assertEqual(self.user_fin.tz, "Asia/Riyadh")
-        self.assertIn(self.g_currency, self.user_fin.groups_id)
-        self.assertNotIn(self.g_partner, self.user_fin.groups_id)
+        self.assertIn(self.g_currency, self.user_fin.all_group_ids)
+        self.assertNotIn(self.g_partner, self.user_fin.all_group_ids)
 
     def test_31_mode_belongs_to_the_applied_template(self):
         parent = self._tmpl(name="Parent", apply_mode="merge", tz_policy="own", tz="Asia/Riyadh")
@@ -269,7 +269,7 @@ class TestUserTemplateEngine(TransactionCase):
         self._tmpl(tag_ids=[Command.set(self.tag_sales.ids)], sequence=20,
                    group_remove_ids_policy="own", group_remove_ids=[Command.set(self.g_export.ids)])
         self._apply()
-        self.assertNotIn(self.g_export, self.user_sales.groups_id)
+        self.assertNotIn(self.g_export, self.user_sales.all_group_ids)
         with Form(self.env["res.users.template.apply.wizard"]) as wiz_form:
             wiz_form.target = "tags"
             wiz_form.tag_ids.add(self.tag_sales)
